@@ -157,6 +157,12 @@ export default {
   methods: {
     async loadProject () {
       const data = await this.$http.project(this.projectName).catch(data => data)
+
+      if (data.lang) {
+        this.$language.current = data.lang.replace('-', '_')
+        document.documentElement.setAttribute('lang', data.lang.split('-')[0])
+      }
+
       this.$store.commit('project', data)
       if (data.status === 200) {
         projectsHistory.push(this.user, this.projectName)
